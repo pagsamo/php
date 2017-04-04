@@ -5,13 +5,23 @@
 	<div id="navigation">
 	<ul class="subjects">
 			<?php 
-			$query = 'SELECT * FROM subjects';
-			$result = mysqli_query($connection, $query); 
-
-			while($subject = mysqli_fetch_assoc($result)){
-				echo "<li>{$subject['menu_name']}</li>";
-			}
-			?>
+			$subject_set = find_all_subjects();
+			while($subject = mysqli_fetch_assoc($subject_set)){
+				echo "<li>{$subject['menu_name']}" ?>
+				<ul>
+				<?php
+					$page_set = find_pages_for_subject($subject['id']);
+					while($page = mysqli_fetch_assoc($page_set))
+					{
+						echo "<li>{$page['menu_name']}</li>";
+					}
+					mysqli_free_result($subject_set);
+				 ?>
+				</ul>
+				</li>
+	<?php	}
+	mysqli_free_result($subject_set);
+	?>
 	</ul>
 	</div>
 	<div id="page">
